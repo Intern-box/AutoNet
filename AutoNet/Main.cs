@@ -28,9 +28,10 @@ namespace AutoNet
 
             for (int i = 0; i < addresses.UnicastAddresses.Count; i++)
             {
-                if (i % 2 == 1)
+                if (addresses.UnicastAddresses[i].Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
                     TOutput.Text += $"IP:   {addresses.UnicastAddresses[i].Address}\r\n";
+
                     TOutput.Text += $"MASK: {addresses.UnicastAddresses[i].IPv4Mask}\r\n";
                 }
             }

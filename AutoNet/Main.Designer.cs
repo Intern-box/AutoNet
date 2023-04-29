@@ -114,7 +114,7 @@
             this.MinimizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;
-            this.Text = "AutoNet 0.3";
+            this.Text = "AutoNet 0.3.1";
             this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
