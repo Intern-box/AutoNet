@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Management;
-using System.Net;
 using System.Net.NetworkInformation;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace AutoNet
@@ -37,11 +36,32 @@ namespace AutoNet
             }
 
             if (addresses.GatewayAddresses.Count > 0) { TOutput.Text += $"GW:   {addresses.GatewayAddresses[0].Address}\r\n"; }
+
+            if (CAdapters.Text != string.Empty && CWorkstation.Text != string.Empty) { ApplyButton.Enabled = true; } else { ApplyButton.Enabled = false; }
+        }
+
+        private void CWorkstation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CAdapters.Text != string.Empty && CWorkstation.Text != string.Empty) { ApplyButton.Enabled = true; } else { ApplyButton.Enabled = false; }
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
+            Process cmdProcess = Process.Start("netsh.exe", $"interface ip set address \"{CAdapters.Text}\" static 192.168.133.203 255.255.255.0 192.168.133.10");
 
+            cmdProcess = Process.Start("netsh.exe", $"interface ip delete dnsservers \"{CAdapters.Text}\" all");
+
+            cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 10.0.0.203");
+
+            cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 10.0.0.201  index=2");
+
+            cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 192.168.133.10  index=3");
+
+            cmdProcess.Dispose();
+
+            CAdapters.SelectedItem = CAdapters.Text;
+
+            CAdapters_SelectedIndexChanged(sender, e);
         }
     }
 }

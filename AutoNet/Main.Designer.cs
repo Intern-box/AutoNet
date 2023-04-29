@@ -74,9 +74,11 @@
             this.CWorkstation.Name = "CWorkstation";
             this.CWorkstation.Size = new System.Drawing.Size(75, 24);
             this.CWorkstation.TabIndex = 3;
+            this.CWorkstation.SelectedIndexChanged += new System.EventHandler(this.CWorkstation_SelectedIndexChanged);
             // 
             // ApplyButton
             // 
+            this.ApplyButton.Enabled = false;
             this.ApplyButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ApplyButton.Location = new System.Drawing.Point(177, 42);
             this.ApplyButton.Name = "ApplyButton";
@@ -112,7 +114,7 @@
             this.MinimizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;
-            this.Text = "AutoNet 0.1";
+            this.Text = "AutoNet 0.3";
             this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
