@@ -9,7 +9,11 @@ namespace AutoNet
     {
         NetworkInterface[] adapters;
 
-        string ip;
+        string oldIP;
+
+        string newIP;
+
+        string gw = "192.168.133.10";
 
         public Main() { InitializeComponent(); }
 
@@ -34,6 +38,8 @@ namespace AutoNet
                 {
                     TOutput.Text += $"IP:   {addresses.UnicastAddresses[i].Address}\r\n";
 
+                    oldIP = addresses.UnicastAddresses[i].Address.ToString();
+
                     TOutput.Text += $"MASK: {addresses.UnicastAddresses[i].IPv4Mask}\r\n";
                 }
             }
@@ -45,45 +51,61 @@ namespace AutoNet
 
         private void CWorkstation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (CWorkstation.Text == "1") { ip = "192.168.133.1"; }
+            if (CWorkstation.Text == "1") { newIP = "192.168.133.1"; }
 
-            else if (CWorkstation.Text == "2") { ip = "192.168.133.2"; }
+            else if (CWorkstation.Text == "2") { newIP = "192.168.133.2"; }
 
-            else if (CWorkstation.Text.Length > 1) { ip = "192.168.133.2" + CWorkstation.Text; }
+            else if (CWorkstation.Text.Length > 1) { newIP = "192.168.133.2" + CWorkstation.Text; }
 
-            else { ip = "192.168.133.20" + CWorkstation.Text; }
+            else { newIP = "192.168.133.20" + CWorkstation.Text; }
 
             TOutput.Text = string.Empty;
 
             CAdapters_SelectedIndexChanged(sender, e);
 
+            oldIP = oldIP.Substring(0, oldIP.LastIndexOf('.') + 1);
+
+            if (oldIP != "192.168.133.")
+            {
+                MessageBox.Show("Обнаружены нестандартные сетевые настройки!", "ВНИМАНИЕ!!!", MessageBoxButtons.OK);
+
+                newIP = oldIP + "70";
+
+                gw = oldIP + "2";
+            }
+
             TOutput.Text +=
                 
                 $"\r\nСтанет:\r\n" +
-                $"IP:   {ip}\r\n" +
+                $"IP:   {newIP}\r\n" +
                 $"MASK: 255.255.255.0\r\n" +
-                $"GW:   192.168.133.10\r\n";
+                $"GW:   {gw}\r\n";
 
             if (CAdapters.Text != string.Empty && CWorkstation.Text != string.Empty) { ApplyButton.Enabled = true; } else { ApplyButton.Enabled = false; }
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            Process cmdProcess = Process.Start("netsh.exe", $"interface ip set address \"{CAdapters.Text}\" static {ip} 255.255.255.0 192.168.133.10");
+            DialogResult result = MessageBox.Show("Данное действие перезапишет сетевые настройки ПК! Продолжить?", "Перезаписать сетевые настройки?", MessageBoxButtons.YesNo);
 
-            cmdProcess = Process.Start("netsh.exe", $"interface ip delete dnsservers \"{CAdapters.Text}\" all");
+            if (result == DialogResult.Yes)
+            {
+                Process cmdProcess = Process.Start("netsh.exe", $"interface ip set address \"{CAdapters.Text}\" static {newIP} 255.255.255.0 {gw}");
 
-            cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 10.0.0.203");
+                cmdProcess = Process.Start("netsh.exe", $"interface ip delete dnsservers \"{CAdapters.Text}\" all");
 
-            cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 10.0.0.201  index=2");
+                cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 10.0.0.203");
 
-            cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 192.168.133.10  index=3");
+                cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 10.0.0.201  index=2");
 
-            cmdProcess.Dispose();
+                cmdProcess = Process.Start("netsh.exe", $"interface ip add dnsservers validate=no \"{CAdapters.Text}\" 192.168.133.10  index=3");
 
-            CAdapters.SelectedItem = CAdapters.Text;
+                cmdProcess.Dispose();
 
-            CAdapters_SelectedIndexChanged(sender, e);
+                CAdapters.SelectedItem = CAdapters.Text;
+
+                CAdapters_SelectedIndexChanged(sender, e);
+            }
         }
     }
 }
