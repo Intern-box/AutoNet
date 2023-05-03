@@ -79,20 +79,11 @@ namespace AutoNet
             {
                 TOutput.Text += $"\r\nПоиск кассы 2...\r\n";
 
-                try
-                {
-                    secondPC = Dns.GetHostEntry("kassa2").AddressList[0].ToString();
-                }
-                catch (Exception)
-                {
-                    TOutput.Text += $"Касса 2 НЕ найдена!\r\n";
-                }
-                finally
-                {
-                    if (secondPC != null) { TOutput.Text += $"Касса 2 найдена,\r\nIP: {secondPC}\r\n"; }
+                try { secondPC = Dns.GetHostEntry("kassa2").AddressList[0].ToString(); }
 
-                    gw = secondPC;
-                }
+                catch (Exception) { TOutput.Text += $"Касса 2 НЕ найдена!\r\n"; }
+
+                finally { if (secondPC != null) { TOutput.Text += $"Касса 2 найдена,\r\nIP: {secondPC}\r\n"; } gw = secondPC; }
             }
         }
 
