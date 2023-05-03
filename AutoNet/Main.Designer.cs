@@ -95,15 +95,17 @@
             this.TOutput.Multiline = true;
             this.TOutput.Name = "TOutput";
             this.TOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TOutput.Size = new System.Drawing.Size(361, 185);
+            this.TOutput.Size = new System.Drawing.Size(361, 214);
             this.TOutput.TabIndex = 5;
+            this.TOutput.Text = "1. Выбрать адаптер\r\n2. Проверить настройки\r\n3. Выбрать № кассы\r\n4. Нажать Примени" +
+    "ть\r\n5. Если IP совпадает, то к п. 3";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(391, 269);
+            this.ClientSize = new System.Drawing.Size(391, 298);
             this.Controls.Add(this.TOutput);
             this.Controls.Add(this.ApplyButton);
             this.Controls.Add(this.CWorkstation);
@@ -115,7 +117,7 @@
             this.MinimizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;
-            this.Text = "AutoNet 0.6";
+            this.Text = "AutoNet 0.7";
             this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
