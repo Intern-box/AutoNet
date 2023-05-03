@@ -42,7 +42,7 @@
             this.CAdapters.FormattingEnabled = true;
             this.CAdapters.Location = new System.Drawing.Point(96, 12);
             this.CAdapters.Name = "CAdapters";
-            this.CAdapters.Size = new System.Drawing.Size(300, 24);
+            this.CAdapters.Size = new System.Drawing.Size(280, 24);
             this.CAdapters.TabIndex = 0;
             this.CAdapters.SelectedIndexChanged += new System.EventHandler(this.CAdapters_SelectedIndexChanged);
             // 
@@ -72,7 +72,7 @@
             this.CWorkstation.FormattingEnabled = true;
             this.CWorkstation.Location = new System.Drawing.Point(96, 42);
             this.CWorkstation.Name = "CWorkstation";
-            this.CWorkstation.Size = new System.Drawing.Size(75, 24);
+            this.CWorkstation.Size = new System.Drawing.Size(58, 24);
             this.CWorkstation.TabIndex = 3;
             this.CWorkstation.SelectedIndexChanged += new System.EventHandler(this.CWorkstation_SelectedIndexChanged);
             // 
@@ -80,9 +80,9 @@
             // 
             this.ApplyButton.Enabled = false;
             this.ApplyButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ApplyButton.Location = new System.Drawing.Point(177, 42);
+            this.ApplyButton.Location = new System.Drawing.Point(160, 42);
             this.ApplyButton.Name = "ApplyButton";
-            this.ApplyButton.Size = new System.Drawing.Size(219, 24);
+            this.ApplyButton.Size = new System.Drawing.Size(216, 24);
             this.ApplyButton.TabIndex = 4;
             this.ApplyButton.Text = "Применить";
             this.ApplyButton.UseVisualStyleBackColor = true;
@@ -95,7 +95,7 @@
             this.TOutput.Multiline = true;
             this.TOutput.Name = "TOutput";
             this.TOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TOutput.Size = new System.Drawing.Size(381, 120);
+            this.TOutput.Size = new System.Drawing.Size(361, 185);
             this.TOutput.TabIndex = 5;
             // 
             // Main
@@ -103,18 +103,19 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(411, 202);
+            this.ClientSize = new System.Drawing.Size(391, 269);
             this.Controls.Add(this.TOutput);
             this.Controls.Add(this.ApplyButton);
             this.Controls.Add(this.CWorkstation);
             this.Controls.Add(this.LWorkstation);
             this.Controls.Add(this.LAdapters);
             this.Controls.Add(this.CAdapters);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;
-            this.Text = "AutoNet 0.3.1";
+            this.Text = "AutoNet 0.4";
             this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

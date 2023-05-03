@@ -7,11 +7,15 @@ namespace AutoNet
 {
     public partial class Main : Form
     {
+        NetworkInterface[] adapters;
+
+        string ip;
+
         public Main() { InitializeComponent(); }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+            adapters = NetworkInterface.GetAllNetworkInterfaces();
 
             foreach (NetworkInterface adapter in adapters) { CAdapters.Items.Add(adapter.Name); }
 
@@ -20,11 +24,9 @@ namespace AutoNet
 
         private void CAdapters_SelectedIndexChanged(object sender, EventArgs e)
         {
-            NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-
             IPInterfaceProperties addresses = adapters[CAdapters.Items.IndexOf(CAdapters.Text)].GetIPProperties();
 
-            TOutput.Text = string.Empty;
+            TOutput.Text = "Сейчас:\r\n";
 
             for (int i = 0; i < addresses.UnicastAddresses.Count; i++)
             {
@@ -43,12 +45,31 @@ namespace AutoNet
 
         private void CWorkstation_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (CWorkstation.Text == "1") { ip = "192.168.133.1"; }
+
+            else if (CWorkstation.Text == "2") { ip = "192.168.133.2"; }
+
+            else if (CWorkstation.Text.Length > 1) { ip = "192.168.133.2" + CWorkstation.Text; }
+
+            else { ip = "192.168.133.20" + CWorkstation.Text; }
+
+            TOutput.Text = string.Empty;
+
+            CAdapters_SelectedIndexChanged(sender, e);
+
+            TOutput.Text +=
+                
+                $"\r\nСтанет:\r\n" +
+                $"IP:   {ip}\r\n" +
+                $"MASK: 255.255.255.0\r\n" +
+                $"GW:   192.168.133.10\r\n";
+
             if (CAdapters.Text != string.Empty && CWorkstation.Text != string.Empty) { ApplyButton.Enabled = true; } else { ApplyButton.Enabled = false; }
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            Process cmdProcess = Process.Start("netsh.exe", $"interface ip set address \"{CAdapters.Text}\" static 192.168.133.203 255.255.255.0 192.168.133.10");
+            Process cmdProcess = Process.Start("netsh.exe", $"interface ip set address \"{CAdapters.Text}\" static {ip} 255.255.255.0 192.168.133.10");
 
             cmdProcess = Process.Start("netsh.exe", $"interface ip delete dnsservers \"{CAdapters.Text}\" all");
 
