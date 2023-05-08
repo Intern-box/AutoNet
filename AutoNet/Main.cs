@@ -10,15 +10,9 @@ namespace AutoNet
     {
         NetworkInterface[] adapters;
 
-        string oldIP;
-
-        string mask;
-
-        string newIP;
+        string oldIP, mask, newIP, secondPC;
 
         string gw = "192.168.133.10";
-
-        string secondPC;
 
         bool trueSettings = true;
 
@@ -37,7 +31,7 @@ namespace AutoNet
 
         private void CAdapters_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CWorkstation.Text = string.Empty; ApplyButton.Enabled = false; secondPC = null;
+            CWorkstation.Enabled = true;  CWorkstation.Text = string.Empty; ApplyButton.Enabled = false; secondPC = null;
 
             IPInterfaceProperties addresses = adapters[CAdapters.Items.IndexOf(CAdapters.Text)].GetIPProperties();
 
@@ -65,6 +59,11 @@ namespace AutoNet
             }
 
             if (oldIP == null) { MessageBox.Show("На ПК не обнаружен IP-адрес!", "ВНИМАНИЕ!!!", MessageBoxButtons.OK); }
+        }
+
+        private void CWorkstation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TOutput.Text = $"Сейчас:\r\nIP:   {oldIP}\r\nMASK: {mask}\r\n"; if (gw != null) { TOutput.Text += $"GW:   {gw}\r\n"; }
 
             if (oldIP.Substring(0, oldIP.LastIndexOf('.') + 1) != "192.168.133.")
             {
@@ -83,15 +82,8 @@ namespace AutoNet
 
                 catch (Exception) { TOutput.Text += $"Касса 2 НЕ найдена!\r\n"; }
 
-                finally { if (secondPC != null) { TOutput.Text += $"Касса 2 найдена,\r\nIP: {secondPC}\r\n"; } gw = secondPC; }
+                finally { if (secondPC != null) { TOutput.Text += $"Касса 2 найдена,\r\nIP: {secondPC}\r\n"; } }
             }
-        }
-
-        private void CWorkstation_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            TOutput.Text = $"Сейчас:\r\nIP:   {oldIP}\r\nMASK: {mask}\r\n"; if (gw != null) { TOutput.Text += $"GW:   {gw}\r\n"; }
-
-            if (secondPC != null) { TOutput.Text += $"\r\nПоиск кассы 2...\r\nКасса 2 найдена,\r\nIP: {secondPC}\r\n"; }
 
             if (CWorkstation.Text == "1") { newIP = oldIP.Substring(0, oldIP.LastIndexOf('.') + 1) + "1"; }
 
@@ -101,17 +93,17 @@ namespace AutoNet
 
             else { newIP = $"{oldIP.Substring(0, oldIP.LastIndexOf('.') + 1)}2{CWorkstation.Text}"; }
 
-            if (secondPC == null) { TOutput.Text = string.Empty; CAdapters_SelectedIndexChanged(sender, e); } ApplyButton.Enabled = true;
-
             TOutput.Text += $"\r\nСтанет:\r\nIP:   {newIP}\r\nMASK: {mask}\r\n";
 
-            if (trueSettings || secondPC != null) { TOutput.Text += $"GW:   {gw}"; }
+            TOutput.Text += $"GW:   {gw}";
+
+            ApplyButton.Enabled = true;
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
             Ping ping = new Ping();
-            
+
             for (int i = 0; i < 4; i++) { if (ping.Send(newIP).Status != IPStatus.TimedOut) { matchIP = true; } }
 
             if (!matchIP)

@@ -68,6 +68,7 @@
             // 
             // CWorkstation
             // 
+            this.CWorkstation.Enabled = false;
             this.CWorkstation.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CWorkstation.FormattingEnabled = true;
             this.CWorkstation.Location = new System.Drawing.Point(96, 42);
@@ -117,7 +118,8 @@
             this.MinimizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;
-            this.Text = "AutoNet 0.7";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "AutoNet 0.8";
             this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
