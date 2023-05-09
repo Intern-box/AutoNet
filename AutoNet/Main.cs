@@ -14,8 +14,6 @@ namespace AutoNet
 
         string gw = "192.168.133.10";
 
-        bool trueSettings = true;
-
         bool matchIP = false;
 
         public Main() { InitializeComponent(); }
@@ -68,8 +66,6 @@ namespace AutoNet
             if (oldIP.Substring(0, oldIP.LastIndexOf('.') + 1) != "192.168.133.")
             {
                 MessageBox.Show("Обнаружены нестандартные сетевые настройки!", "ВНИМАНИЕ!!!", MessageBoxButtons.OK);
-                
-                trueSettings = false;
             }
 
             DialogResult result = MessageBox.Show("Пытаемся найти кассу 2?", "Поиск кассы 2", MessageBoxButtons.YesNo);
