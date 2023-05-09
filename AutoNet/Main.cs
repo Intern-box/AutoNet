@@ -72,7 +72,7 @@ namespace AutoNet
                 trueSettings = false;
             }
 
-            DialogResult result = MessageBox.Show("Пытаемся найти кассу 2?", "Поиск кассы 2?", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("Пытаемся найти кассу 2?", "Поиск кассы 2", MessageBoxButtons.YesNo);
 
             if (result == DialogResult.Yes)
             {
@@ -102,13 +102,17 @@ namespace AutoNet
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            Ping ping = new Ping();
-
-            for (int i = 0; i < 4; i++) { if (ping.Send(newIP).Status != IPStatus.TimedOut) { matchIP = true; } }
+            if (new Ping().Send(newIP) != null)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (new Ping().Send(newIP).Status != IPStatus.TimedOut) { matchIP = true; }
+                }
+            }
 
             if (!matchIP)
             {
-                DialogResult result = MessageBox.Show("Данное действие перезапишет сетевые настройки ПК! Продолжить?", "Перезаписать сетевые настройки?", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("Данное действие перезапишет сетевые настройки ПК! Продолжить?", "Перезапись настроек", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
@@ -124,9 +128,7 @@ namespace AutoNet
 
                     cmdProcess.Dispose();
 
-                    CAdapters.SelectedItem = CAdapters.Text;
-
-                    CAdapters_SelectedIndexChanged(sender, e);
+                    Application.Exit();
                 }
             }
             else
