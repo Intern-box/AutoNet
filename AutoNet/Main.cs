@@ -117,6 +117,7 @@ namespace AutoNet
 
             TOutput.Text += $"GW:   {gw}";
 
+            // Активация кнопки Применить
             ApplyButton.Enabled = true;
         }
 
