@@ -12,7 +12,7 @@ namespace AutoNet
 
         public Main() { InitializeComponent(); }
 
-        void Main_Load(object sender, EventArgs e)
+        private void Main_Load(object sender, EventArgs e)
         {
             // Читаю список адаптеров в системе
             adapters = NetworkInterface.GetAllNetworkInterfaces();
@@ -52,11 +52,8 @@ namespace AutoNet
                 }
             }
 
-            if (addresses.GatewayAddresses.Count > 0)
-            {
-                // Вывожу в поле шлюз
-                NowGW.Items.Add(addresses.GatewayAddresses[0].Address.ToString());
-            }
+            // Вывожу в поле шлюз
+            if (addresses.GatewayAddresses.Count > 0) { NowGW.Items.Add(addresses.GatewayAddresses[0].Address.ToString()); }
 
             // Заполняю поля вывода первыми элементами
             if (NowIP.Items.Count > 0) { NowIP.SelectedIndex = 0; }
@@ -90,6 +87,7 @@ namespace AutoNet
 
             Workstation.Enabled = PingIP.Enabled = PingHostname.Enabled = true;
 
+            // Заполняю поля с новыми настройками
             if (WorkstationsList.Text == "1") { WillBeIP.Text = NowIP.Text.Substring(0, NowIP.Text.LastIndexOf('.') + 1) + "1"; }
 
             else if (WorkstationsList.Text == "2") { WillBeIP.Text = NowIP.Text.Substring(0, NowIP.Text.LastIndexOf('.') + 1) + "2"; }
@@ -103,8 +101,10 @@ namespace AutoNet
             if (NowGW.Text != string.Empty) { WillBeGW.Text = NowGW.Text; WillBeGW.Enabled = true; } else { WillBeGW.Enabled = false; }
         }
 
+        // Пинг ЛЮБОГО IP
         private void PingIP_Click(object sender, EventArgs e) { if (WorkstationIP.Text != string.Empty) { ChkIP(WorkstationIP.Text); } }
 
+        // Пинг кассы по имени
         private void PingHostname_Click(object sender, EventArgs e)
         {
             if (Workstation.Text != string.Empty)
@@ -121,10 +121,13 @@ namespace AutoNet
             }
         }
 
+        // Уравниваю значения полей IP-сейчас и IP для пинга кассы
         private void EquIP_Click(object sender, EventArgs e) { WorkstationIP.Text = NowIP.Text; }
 
+        // Проверка пингом нового IP
         private void CheckIP_Click(object sender, EventArgs e) { if (WillBeIP.Text != string.Empty) { ChkIP(WillBeIP.Text); } }
 
+        // Метод для пинга
         private bool ChkIP(string ip)
         {
             Errors.Items.Clear();
@@ -141,13 +144,14 @@ namespace AutoNet
             else { Errors.Items.Add($"Адрес {ip} ДОСТУПЕН!"); return false; }
         }
 
+        // Применяю новые настройки
         private void ApplyButton_Click(object sender, EventArgs e)
         {
+            // Если новый IP не пингуется, - вывожу запрос на изменение настроек
             if (WillBeIP.Text != string.Empty)
             {
                 if (ChkIP(WillBeIP.Text))
                 {
-                    // Если новый IP не пингуется, - вывожу запрос на изменение настроек
                     DialogResult result = MessageBox.Show("Данное действие перезапишет сетевые настройки ПК! Продолжить?", "Перезапись настроек", MessageBoxButtons.YesNo);
 
                     // При положительном ответе применяю настройки
